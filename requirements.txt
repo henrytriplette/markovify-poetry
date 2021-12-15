@@ -1,0 +1,5 @@
+markovify
+spacy
+beautifulsoup4
+EbookLib
+internetarchive
