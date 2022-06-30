@@ -42,7 +42,7 @@ class Author(object):
         self.model = self.get_or_generate_model(self.name, state_size, load_only)
 
     @staticmethod
-    def get_or_generate_model(name, state_size, load_only, scripts_location="/generated/", input_location="/input/"):
+    def get_or_generate_model(name, state_size, load_only, scripts_location="/models/", input_location="/input/"):
         """
         Retrieve a stored model or generate a new one and store it
         Generating models can be a time-intensive process, especially during testing, but thankfully Markovify offers a
