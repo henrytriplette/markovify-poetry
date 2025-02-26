@@ -1,5 +1,8 @@
 venv
 .test
-output/*.*
-input/*.*
-models/*.*
+output
+input
+models
+
+__pycache__
+*.pyc
