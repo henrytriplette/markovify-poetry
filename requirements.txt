@@ -3,3 +3,5 @@ spacy
 beautifulsoup4
 EbookLib
 internetarchive
+ollama
+rich
