@@ -1,3 +1,13 @@
+"""
+This script will try load JSON models and generate text
+
+Usage:
+    python generateText.py -m "some-model.json" -l 10
+
+Author: Henry Triplette
+Date: February 27, 2025
+"""
+
 #!/usr/bin/python
 import markovify
 import argparse

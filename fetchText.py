@@ -1,3 +1,13 @@
+"""
+This script will try to fetch some txt files from the Internet Archive given a Creator Key.
+
+Usage:
+    python fetchText.py -f "John Doe"
+
+Author: Henry Triplette
+Date: February 27, 2025
+"""
+
 import argparse
 import internetarchive as ia
 

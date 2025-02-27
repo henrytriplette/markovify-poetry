@@ -1,3 +1,14 @@
+"""
+This script will try load JSON models and generate text,
+then send the generated text to Ollama for correction.
+
+Usage:
+    python generateTextAi.py -m "some-model.json" -l 10
+
+Author: Henry Triplette
+Date: February 27, 2025
+"""
+
 #!/usr/bin/python
 import markovify
 import argparse

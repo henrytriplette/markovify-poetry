@@ -1,3 +1,13 @@
+"""
+This script will try to convert TXT files to Markovify.json models
+
+Usage:
+    python generateModel.py -f "some-txt-file.txt"
+
+Author: Henry Triplette
+Date: February 27, 2025
+"""
+
 #!/usr/bin/python
 import markovify
 import json
