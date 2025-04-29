@@ -14,11 +14,12 @@ import argparse
 import re
 
 from libs import posifiedText
-
+from libs import textUtils
 
 def main(args):    
+    textUtils.remove_duplicate_lines(args.file, args.file + ".deduped.txt")
     # Read the file
-    with open(args.file, 'r', encoding='utf-8') as file:
+    with open(args.file + ".deduped.txt", 'r', encoding='utf-8') as file:
         corpus = file.read()
 
     # Remove special characters (keeping letters, numbers, spaces, and newlines)

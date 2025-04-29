@@ -23,7 +23,7 @@ def main(args):
     sentences = []
     
     # Generate a sentences array
-    for i in range(args.length):
+    for i in range(int(args.length)):
         sentence = reconstituted_model.make_sentence(tries=100)
         if (sentence is not None):
             sentences.append(sentence)
@@ -40,7 +40,8 @@ def main(args):
         ollama_response = ollama.chat(model='deepseek-r1:8b', messages=[
         {
             'role': 'system',
-            'content': 'Correct the form of the given poem by analyzing and adjusting its structure, rhyme scheme, meter, line breaks, and punctuation. Ensure adjustments are made while preserving the original meaning and creativity. Provide only the corrected poem without additional comments. If the poem intentionally deviates from traditional forms, correct the form. Adjust line spacing and suggest appropriate rhyme endings as needed.',
+            #'content': 'Correct the form of the given poem by analyzing and adjusting its structure, rhyme scheme, meter, line breaks, and punctuation. Ensure adjustments are made while preserving the original meaning and creativity. Provide only the corrected poem without additional comments. If the poem intentionally deviates from traditional forms, correct the form. Adjust line spacing and suggest appropriate rhyme endings as needed.',
+            'content': 'You are a creative AI lyricist. Your task is to take a poem and rewrite it as lyrics for a song. Preserve the core emotion, themes, and imagery of the original poem, but adapt the structure to fit a typical song format (e.g., verses, chorus, possibly a bridge). Feel free to modernize language or adjust phrasing for rhythm and melody, while keeping the soul of the poem intact. If the poem has a specific rhyme scheme, try to maintain it, but prioritize the flow and musicality of the lyrics. Provide only the rewritten lyrics without additional comments or explanations.',
         },
         {
             'role': 'user',
