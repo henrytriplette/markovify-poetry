@@ -26,6 +26,7 @@ config.read('config.ini')
 def main(args):
     reconstituted_model = posifiedText.loadPOSifiedText(args)
     sentences = []
+    results = ''
     
     # Generate a sentences array
     for i in range(int(args.length)):
@@ -35,7 +36,11 @@ def main(args):
 
     # Join sentences into a sonnet
     sonnet = "\n".join(sentences)
-
+    
+    results += sonnet
+    results += "\n\n"
+    
+    # Print the generated sonnet
     print("+---------------------------------+")
     print(sonnet)
     print("+---------------------------------+")
@@ -76,20 +81,42 @@ def main(args):
         ])
         
         # Remove the </think> tags from the response
-        result = re.sub(r'<think>.*?</think>', '', ollama_response['message']['content'], flags=re.DOTALL)
+        draft = re.sub(r'<think>.*?</think>', '', ollama_response['message']['content'], flags=re.DOTALL)
 
         # Printing out of the generated response
         print("+---------------------------------+")
-        print(result)
+        print(draft)
         print("+---------------------------------+")
 
+        # Adding the generated response to the results
+        results += "---------------------------------\n"
+        results += draft
+        results += "\n\n"
+        
         # Refine the result if needed
         
         if ai_refine == 'true':
             # Set the model and mode for refinement
-            ai_model = config.get('AI', 'ai_model')
-            ai_mode = config.get('AI', 'ai_mode')
-            content = 'You are a LyricFlow Optimizer, a creative AI agent that enhances the musicality and flow of song lyrics without compromising their original meaning, emotional tone, or artistic intent. Enhance these lyrics by identifying rhyme patterns and rhythmic structure, adjusting syllable counts for better flow, replacing words to strengthen rhyme and meter, and preserving the original meaning and mood—output only the revised lyrics without commentary.'
+            ai_model = config.get('AI', 'ai_refine_model')
+
+            content = """
+                You are a LyricFlow Optimizer, a creative AI agent that enhances the musicality and flow of song lyrics without compromising their original meaning, emotional tone, or artistic intent. 
+                Enhance these lyrics by identifying rhyme patterns and rhythmic structure, adjusting syllable counts for better flow, replacing words to strengthen rhyme and meter, and preserving the original meaning and mood.
+                Analyze Rhyme and Rhythm
+                Identify the existing rhyme scheme (e.g., AABB, ABAB) and rhythmic structure (meter and syllable patterns).
+                Fix inconsistencies or areas lacking musical cohesion.
+                Optimize Flow and Syllable Count
+                Adjust line lengths to improve cadence and readability.
+                Aim for consistent syllable counts per line (unless stylistically justified).
+                Enhance Rhyme and Meter
+                Replace words to improve rhyme strength and rhythmic regularity.
+                Prefer poetic and musically resonant word choices.
+                Maintain or elevate the artistic quality of the lyrics.
+                Preserve Core Meaning and Mood
+                Avoid changes that distort the song’s emotional message, story, or character voice.
+                Match the tone (e.g., melancholic, defiant, romantic, playful) of the original lyrics.
+                Provide only the rewritten lyrics without additional comments or explanations.
+            """
             
             # Setting up the model, enabling streaming responses, and defining the input messages
             ollama_response = ollama.chat(model=ai_model, messages=[
@@ -99,17 +126,22 @@ def main(args):
             },
             {
                 'role': 'user',
-                'content': result,
+                'content': draft,
             },
             ])
             
             # Remove the </think> tags from the response
-            result = re.sub(r'<think>.*?</think>', '', ollama_response['message']['content'], flags=re.DOTALL)
+            refine = re.sub(r'<think>.*?</think>', '', ollama_response['message']['content'], flags=re.DOTALL)
             
             # Printing out of the refined response
             print("+---------------------------------+")
-            print(result)
+            print(refine)
             print("+---------------------------------+")
+        
+            # Adding the generated response to the results
+            results += "---------------------------------\n"
+            results += refine
+            results += "\n\n"
         
         save_output = config.get('DEFAULT', 'save_output')
         if save_output == 'true':
@@ -122,9 +154,9 @@ def main(args):
             
             # Save the result to a file
             with open(filename, 'w', encoding='utf-8') as f:
-                f.write(result)
+                f.write(results)
                 
-            print(f"Result saved to {filename}")
+            print(f"Results saved to {filename}")
 
     except ollama.ResponseError as e:
         print('Error:', e.error)
